@@ -1,0 +1,20 @@
+{
+  "name": "ymock",
+  "version": "1.0.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "ymock": "./bin/ymock"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "connect": "^3.5.0",
+    "http-proxy": "^1.16.2",
+    "request": "^2.79.0"
+  }
+}
