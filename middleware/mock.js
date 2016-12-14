@@ -52,29 +52,27 @@ execMock[respondWithTypeObj.str] = function(str, req, res){
 
 // 解析Json文件
 execMock[respondWithTypeObj.jsonFile] = function (fileName, req, res){
-	debugger;
-	var absoluteFilePath = path.join(path.cwd(), fileName);
-	var data = '';
-	if(fs.existsSync(absoluteFilePath)){
-		data = fs.readFileSync(absoluteFilePath, { encoding: 'utf-8'});
-	} else {
-		data = util.format('File %s not exist!', absoluteFilePath);
+	var absoluteFilePath = path.join(process.cwd(), fileName), 
+		data = '';
+	if(!fs.existsSync(absoluteFilePath)){
+		data = `\t${absoluteFilePath}文件不存在`;
 		console.error(data);
-	}
+		return data;
+	} 
 
+	data = fs.readFileSync(absoluteFilePath, { encoding: 'utf-8'});
 	try{
 		return JSON.parse(data);
 	} catch(e){
-		console.log(`The content is not json string of the file \"${absoluteFilePath}\".`);
+		data = `\t${absoluteFilePath}文件内容不是合法的JSON`;
+		console.error(data);
 	}
 	return data;
 };
 
 // 解析mockjson 文件
 execMock[respondWithTypeObj.mockJsonFile] = function(fileName, req, res){
-	debugger;
 	var data = this[respondWithTypeObj.jsonFile](fileName, req, res);
-	debugger;
 	if(qMockUtil.isObject(data)){
 		data = mockJson.generateFromTemplate(data);
 	}

@@ -7,7 +7,12 @@ const qMockUtil = require('../utils/util');
 
 function _match(req){
 	var url = req.url;
+	debugger;
 	var config = require(qMockUtil.getConfigFile()); // 为了热更新
+	if(!qMockUtil.isArray(config)){
+		console.error(`\t${qMockUtil.getConfigFile()}格式不正确`);
+		return;
+	}
 	var matchedRule = config.find(function(rule){
 		if(qMockUtil.isString(rule.pattern)){
 			if(rule.pattern === url) {
@@ -29,9 +34,11 @@ function _match(req){
 
 module.exports = function(req, res, next) {
 	req.matchedRule = _match(req);
-	console.log(`${!!req.url ? '匹配：': '不匹配：'}${req.url} `);
+	console.log(`\t匹配结果：${!!req.matchedRule ? '匹配': '不匹配'}`);
 	if(req.matchedRule && !req.matchedRule.respondWith){
-		console.error(`${req.matchedRule}对应的respondWith属性不合法`);
+		var msg = `${req.matchedRule}对应的respondWith属性不合法`;
+		console.error('\t' + msg);
+		res.end(msg);
 		return;
 	}
 	next();

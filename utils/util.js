@@ -4,6 +4,7 @@
 'use strict';
 
 const path = require('path');
+const fs = require('fs');
 
 var util = {};
 
@@ -19,6 +20,11 @@ var util = {};
 // 获取qmock config文件路径
 util.getConfigFile = function(){
 	return path.join(process.cwd(), 'ymockcfg.js');
+}
+
+// 判断当前是否存在配置文件
+util.existConfigFile = function(){
+	return fs.existsSync(util.getConfigFile());
 }
 
 module.exports = util;

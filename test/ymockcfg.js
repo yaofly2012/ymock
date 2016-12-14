@@ -32,5 +32,12 @@
 */
 module.exports = [
 	{
+		pattern: function(req){
+			console.log('hehe');
+			return false;
+		},
+		respondWith: function(){
+			return 'data/list.json'
+		}
 	}
 ];

@@ -1,6 +1,6 @@
 {
   "name": "ymock",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "bin": {
-    "ymock": "./bin/ymock"
+    "ymock": "./bin/cli.js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
