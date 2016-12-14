@@ -16,8 +16,8 @@ const mock = require('../middleware/mock.js');
 /**
 * 通过简单的方式实现mockcfg.js文件热更新。
 * 注意：不要在Module上下文中引用mockcfg.js模块，参考match.js模块是如何引用mockcfg模块的。
-*/ 
-;(function(){
+*/
+function hotUpdateMockCfg(){
 	var mockcfgPath = require.resolve(qMockUtil.getConfigFile());
 	fs.watch(mockcfgPath, function(){
 		var module = require.cache[mockcfgPath];
@@ -26,12 +26,11 @@ const mock = require('../middleware/mock.js');
 		}
 		require.cache[mockcfgPath] = null;
 	});
-})();
+}
 
 module.exports = function(port){
 	if(!qMockUtil.existConfigFile()){
 		console.error('当前目录不存在ymockcfg.js文件');
-		process.exit(0);
 		return;
 	}
 	var app = connect();
@@ -58,4 +57,7 @@ module.exports = function(port){
 				console.error('服务启动失败，' + e.code);
 		}
 	});
+
+	// 此处开启qmockcfg热更新
+ 	hotUpdateMockCfg();
 };
