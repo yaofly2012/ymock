@@ -6,8 +6,6 @@
 const wildcard = '*';
 
 module.exports = function(req, res, next){
-	console.log('处理请求：' + req.url);
-	debugger;
 	var origin = req.headers['origin'] || wildcard;
 	res.setHeader('Access-Control-Allow-Origin', origin);
 	res.setHeader('Access-Control-Allow-Credentials', wildcard !== origin);

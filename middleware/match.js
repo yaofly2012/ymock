@@ -14,19 +14,9 @@ function _match(req){
 		return;
 	}
 	var matchedRule = config.find(function(rule){
-		if(qMockUtil.isString(rule.pattern)){
-			if(rule.pattern === url) {
-				return true;
-			}
-		} else if(qMockUtil.isRegExp(rule.pattern)){
-			if(rule.pattern.test(url)){
-				return true;
-			}
-		} else if(qMockUtil.isFunction(rule.pattern)){
-			if(rule.pattern(req)){
-				return true;
-			}
-		}
+		return (qMockUtil.isString(rule.pattern) && rule.pattern === url)
+			|| (qMockUtil.isRegExp(rule.pattern) && rule.pattern.test(url))
+			|| (qMockUtil.isFunction(rule.pattern) && rule.pattern(req));
 	});
 
 	return matchedRule;
@@ -34,10 +24,10 @@ function _match(req){
 
 module.exports = function(req, res, next) {
 	req.matchedRule = _match(req);
-	console.log(`\t匹配结果：${!!req.matchedRule ? '匹配': '不匹配'}`);
+	console.log(`处理请求: ${req.url}\n匹配结果：${!!req.matchedRule ? '匹配': '不匹配'}`);
 	if(req.matchedRule && !req.matchedRule.respondWith){
 		var msg = `${req.matchedRule}对应的respondWith属性不合法`;
-		console.error('\t' + msg);
+		console.error(msg);
 		res.end(msg);
 		return;
 	}

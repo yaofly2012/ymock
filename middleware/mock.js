@@ -55,7 +55,7 @@ execMock[respondWithTypeObj.jsonFile] = function (fileName, req, res){
 	var absoluteFilePath = path.join(process.cwd(), fileName), 
 		data = '';
 	if(!fs.existsSync(absoluteFilePath)){
-		data = `\t${absoluteFilePath}文件不存在`;
+		data = `${absoluteFilePath}文件不存在`;
 		console.error(data);
 		return data;
 	} 
@@ -64,7 +64,7 @@ execMock[respondWithTypeObj.jsonFile] = function (fileName, req, res){
 	try{
 		return JSON.parse(data);
 	} catch(e){
-		data = `\t${absoluteFilePath}文件内容不是合法的JSON`;
+		data = `${absoluteFilePath}文件内容不是合法的JSON`;
 		console.error(data);
 	}
 	return data;
@@ -100,8 +100,8 @@ module.exports = function(req, res, next) {
 		next();
 		return;
 	}
-	var mockData = getMockData(req, res);
-	if(qMockUtil.isString(mockData || '')){
+	var mockData = getMockData(req, res) || '';
+	if(qMockUtil.isString(mockData)){
 		res.setHeader('Content-Type', 'text/plain');
 	}else{
 		res.setHeader('Content-Type', 'application/json');
