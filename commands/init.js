@@ -15,16 +15,16 @@ module.exports = function(name){
 	
 	if(!fs.existsSync(projectName)){
 		fs.mkdirSync(projectName);
-		console.log(projectName + '创建成功');
+		console.log(`目录${projectName}创建成功`);
 	} else {
-		console.log(projectName + '已经存在');
+		console.log(`目录${projectName}已经存在`);
 	}
 
 	if(!fs.existsSync(config)){
 		fs.writeFileSync(config, fs.existsSync(configTpl) ? fs.readFileSync(configTpl) : '');
-		console.log(config + '创建成功');
+		console.log(`文件${config}创建成功`);
 	} else {
-		console.log(config + '已经存在');
+		console.log(`文件${config}已经存在`);
 	}
 	console.log(`${name || 'ymock'}初始化成功`);
 }
