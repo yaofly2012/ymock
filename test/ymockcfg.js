@@ -34,7 +34,7 @@ module.exports = [
 	{
 		pattern: function(req){
 			console.log('hehe');
-			return false;
+			return true;
 		},
 		respondWith: function(){
 			return 'data/list.json'

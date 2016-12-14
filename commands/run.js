@@ -34,9 +34,9 @@ module.exports = function(port){
 		return;
 	}
 	var app = connect();
-	app.use(crossDomain)
-		.use(match)
+	app.use(match)
 		.use(passthrogh)
+		.use(crossDomain) // 只对mock的请求进行CORS处理
 		.use(bodyParser.json())
 		.use(bodyParser.urlencoded({ extended: true }))
 		.use(mock);
