@@ -3,7 +3,7 @@
 ##安装
 `npm install -g ymock`
 ## 快速开始
-1. 创建ymock项目(当前工作目录是user/study/ymock)
+1. 1 创建ymock项目(当前工作目录是user/study/ymock)
 
 `ymock init demo1`
 
@@ -69,7 +69,7 @@ module.exports = [
 ### pattern取值—函数
 会把请求对象（[http.IncomingMessage](http://nodejs.cn/doc/node/http.html#http_class_http_incomingmessage)）作为参数传给该函数，如果函数返回true则匹配成功，否则不匹配。这是最灵活的一种方式。
 继续修改ymockcfg.js:
-```javascript
+```
 {
 		pattern: function(req){
 			// 你的逻辑
@@ -140,7 +140,7 @@ module.exports = [
 ];
 ```
 访问http://127.0.0.1:8080/user.json?name=john，则输出：
-```json
+```
 { name: "john"}
 ```
 根据请求中QueryString的参数不同，而输出的mock数据也不同。
