@@ -1,20 +1,20 @@
 /**
-* 处理跨域
+* 跨域请求，处理res头部
 */
 'use strict';
 
-const wildcard = '*';
-
 module.exports = function(req, res, next){
-	var origin = req.headers['origin'] || wildcard;
-	res.setHeader('Access-Control-Allow-Origin', origin);
-	res.setHeader('Access-Control-Allow-Credentials', wildcard !== origin);
-	if(req.method === 'OPTIONS') {
-		res.setHeader('Access-Control-Allow-Headers', req.headers['Access-Control-Request-Headers'.toLowerCase()]);
-		res.setHeader('Access-Control-Allow-Methods', req.headers['Access-Control-Request-Method'.toLowerCase()]);
-		res.setHeader('Access-Control-Max-Age', 86400); // 缓存24H
-		res.end();
-		return;
+	// 跨域情况才处理匹配请求res
+	if(req.headers['origin']){
+		res.setHeader('Access-Control-Allow-Origin', req.headers['origin']);
+		res.setHeader('Access-Control-Allow-Credentials', true);
+		if(req.method === 'OPTIONS') {
+			res.setHeader('Access-Control-Allow-Headers', req.headers['Access-Control-Request-Headers'.toLowerCase()]);
+			res.setHeader('Access-Control-Allow-Methods', req.method);
+			res.setHeader('Access-Control-Max-Age', 86400); // 24H
+			res.end();
+			return;
+		}
 	}
 	next();
 };
