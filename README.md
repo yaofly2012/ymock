@@ -3,7 +3,7 @@
 ##安装
 `npm install -g ymock`
 ## 快速开始
-1. 1 创建ymock项目(当前工作目录是user/study/ymock)
+1. 创建ymock项目(当前工作目录是user/study/ymock)
 
 `ymock init demo1`
 
@@ -40,7 +40,7 @@ ymock run
 
 在浏览器中输入地址：http://127.0.0.1:8080,不出意外就可以看到输出的数据了。
 ## 细说ymockcfg.js
-ymockcfg.js本质上就是一个nodejs模块，该模块返回的是个数组，在数组中添加URL匹配规则以及对应的JSON数据。
+ymockcfg.js本质上就是一个nodejs模块（不过修改该文件，不用重启服务），该模块返回的是个数组，在数组中添加URL匹配规则以及对应的JSON数据。
 数组的元素格式：
 ```
 {
