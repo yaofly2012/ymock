@@ -1,11 +1,15 @@
 # ymock
 给我一个URL，返还给你个JSON数据。
 ##安装
-`npm install -g ymock`
+`
+npm install -g ymock
+`
 ## 快速开始
-1. 创建ymock项目(当前工作目录是user/study/ymock)
+1.	创建ymock项目(当前工作目录是user/study/ymock)
 
-`ymock init demo1`
+`
+ymock init demo1
+`
 
 执行成功后会在当前目录下创建demo1目录，并在在demo1目录里创建文件ymockcfg.js。
 ``` javascript
@@ -15,15 +19,20 @@ module.exports = [
    ];
 ```
 这个文件就是你生成JSON数据的配置文件了。
-2. 创建用户信息JSON数据
-在ymockcfg.js同级目录中创建data目录，并创建json文件user.json:
+
+2.	创建用户信息JSON数据
+
+在ymockcfg.js同级目录中创建data目录，并创建json文件user.json：
+
 ``` json
 {
 	"name": "john",
 	"age": "24"
 }
 ```
-3. 在ymockcfg.js中添加请求匹配规则配置
+
+3.	在ymockcfg.js中添加请求匹配规则配置
+
 ```javascript
 module.exports = [
 	{
@@ -32,17 +41,20 @@ module.exports = [
 	}
 ];
 ```
-4. 启动ymock服务：
+
+4.	启动ymock服务：
+
 ```
 ymock run
 ```
-5. 查看生成的JSON数据
+
+5.	查看生成的JSON数据
 
 在浏览器中输入地址：http://127.0.0.1:8080,不出意外就可以看到输出的数据了。
 ## 细说ymockcfg.js
 ymockcfg.js本质上就是一个nodejs模块（不过修改该文件，不用重启服务），该模块返回的是个数组，在数组中添加URL匹配规则以及对应的JSON数据。
 数组的元素格式：
-```
+``` javascript
 {
 		pattern: /user\.json/,
 		respondWith: 'data/user.json'
