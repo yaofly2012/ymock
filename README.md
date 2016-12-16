@@ -6,7 +6,7 @@
 
 
 给我一个URL，返给你个JSON数据。
-[API documentation](http://tj.github.com/ymock/)
+[API documentation](https://github.com/yaofly2012/ymock)
 	
 	
 ## 安装
