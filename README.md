@@ -1,15 +1,18 @@
 # ymock
 给我一个URL，返还给你个JSON数据。
-##安装
-`
+## 安装
+### 预置条件
+先安装[nodejs](https://nodejs.org/en/download/)
+### 执行安装命令
+```
 npm install -g ymock
-`
+```
 ## 快速开始
 1.	创建ymock项目(当前工作目录是user/study/ymock)
 
-`
+```
 ymock init demo1
-`
+```
 
 执行成功后会在当前目录下创建demo1目录，并在在demo1目录里创建文件ymockcfg.js。
 ``` javascript
@@ -152,7 +155,7 @@ module.exports = [
 ];
 ```
 访问http://127.0.0.1:8080/user.json?name=john，则输出：
-```
+``` javascript
 { name: "john"}
 ```
 根据请求中QueryString的参数不同，而输出的mock数据也不同。
@@ -163,7 +166,45 @@ respondWidth的函数参数分别是：
 请求对象（[http.IncomingMessage](http://nodejs.cn/doc/node/http.html#http_class_http_incomingmessage)），
 响应对象（[http.ServerResponse](http://nodejs.cn/doc/node/http.html#http_class_http_serverresponse)）
 #### respondWith函数返回值
-返回值可以是字符串或者JSON对象。并且如果返回值是以".json"结尾的字符串，则视为相对于当前目录的JSON文件，同理如果以”.mockjson"结尾的字符串则视为相对于当前目录的mockjson文件。
+返回值可以是JSON对象也可以是字符串。并且如果返回值是以".json"结尾的字符串，则视为相对于当前目录的JSON文件，
+```javascript
+module.exports = [
+	{
+		pattern: /user\.json/,
+		respondWith: function(postData, qs, req, res){
+			return 'data/user.json'; // 返回json文件名称字符串
+		}
+	}
+];
+```
+同理如果以”.mockjson"结尾的字符串则视为相对于当前目录的mockjson文件：
+```javascript
+module.exports = [
+	{
+		pattern: /user\.json/,
+		respondWith: function(postData, qs, req, res){
+			return 'data/userlist.mockjson';
+		}
+	}
+];
+```
+
+## ymock命令介绍
+执行命令可以查看ymock命令的帮助：
+```
+ymock -h
+```
+### init
+执行下面命令查看init子命令的帮助
+```
+ymock init -h
+```
+
+### run -p [port]
+执行下面命令查看run子命令的帮助
+```
+ymock run -h
+```
 
 ## 结束语
 如果你觉得不错，[请点我](https://github.com/yaofly2012/ymock)到Github给个星。如果你有兴趣欢迎添砖加瓦！
