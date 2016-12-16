@@ -5,7 +5,7 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/ymock.svg?style=flat)](https://www.npmjs.org/package/ymock)
 
 	给我一个URL，返给你个JSON数据。
-	[源码](https://github.com/yaofly2012/ymock)
+	
 	
 ## 安装
 ### 预置条件
