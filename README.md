@@ -9,7 +9,7 @@
 [API documentation](https://github.com/yaofly2012/ymock)
 
 ## ymock能做什么
-+ mock接口数据，支持mockjson
++ mock接口数据，并且支持mockjson模板
 + mock接口逻辑
 
 ## 安装
