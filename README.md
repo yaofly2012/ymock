@@ -4,7 +4,9 @@
 [![NPM Version](http://img.shields.io/npm/v/ymock.svg?style=flat)](https://www.npmjs.org/package/ymock)
 [![NPM Downloads](https://img.shields.io/npm/dm/ymock.svg?style=flat)](https://www.npmjs.org/package/ymock)
 
-	给我一个URL，返给你个JSON数据。
+
+给我一个URL，返给你个JSON数据。
+[API documentation](http://tj.github.com/ymock/)
 	
 	
 ## 安装
