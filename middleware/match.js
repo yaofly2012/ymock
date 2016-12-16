@@ -7,7 +7,10 @@ const qMockUtil = require('../utils/util');
 
 function _match(req){
 	var url = req.url;
-	debugger;
+	// 解决非跨域请求url没有host信息问题
+	if(!req.headers['origin'] && url[0] === '/'){
+		url = 'http://' + req.headers['host'] + url;
+	}
 	var config = require(qMockUtil.getConfigFile()); // 为了热更新
 	if(!qMockUtil.isArray(config)){
 		console.error(`\t${qMockUtil.getConfigFile()}格式不正确`);
