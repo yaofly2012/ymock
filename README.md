@@ -7,8 +7,11 @@
 
 给我一个URL，返给你个JSON数据。
 [API documentation](https://github.com/yaofly2012/ymock)
-	
-	
+
+## ymock能做什么
++ mock接口数据，支持mockjson
++ mock接口逻辑
+
 ## 安装
 ### 预置条件
 先安装[nodejs](https://nodejs.org/en/download/)
@@ -20,7 +23,7 @@ $ npm install -g ymock
 + 创建ymock项目(当前工作目录是user/study/ymock)
 
 ```
-ymock init demo1
+$ ymock init demo1
 ```
 
 执行成功后会在当前目录下创建demo1目录，并在在demo1目录里创建文件ymockcfg.js。
