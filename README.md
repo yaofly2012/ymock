@@ -1,14 +1,14 @@
 # ymock
-给我一个URL，返还给你个JSON数据。
+给我一个URL，返给你个JSON数据。
 ## 安装
 ### 预置条件
 先安装[nodejs](https://nodejs.org/en/download/)
 ### 执行安装命令
 ```
-npm install -g ymock
+$ npm install -g ymock
 ```
 ## 快速开始
-1.	创建ymock项目(当前工作目录是user/study/ymock)
++ 创建ymock项目(当前工作目录是user/study/ymock)
 
 ```
 ymock init demo1
@@ -23,7 +23,7 @@ module.exports = [
 ```
 这个文件就是你生成JSON数据的配置文件了。
 
-2.	创建用户信息JSON数据
++ 创建用户信息JSON数据
 
 在ymockcfg.js同级目录中创建data目录，并创建json文件user.json：
 
@@ -34,7 +34,7 @@ module.exports = [
 }
 ```
 
-3.	在ymockcfg.js中添加请求匹配规则配置
++ 在ymockcfg.js中添加请求匹配规则配置
 
 ```javascript
 module.exports = [
@@ -45,13 +45,13 @@ module.exports = [
 ];
 ```
 
-4.	启动ymock服务：
++ 启动ymock服务：
 
 ```
-ymock run
+$ ymock run
 ```
 
-5.	查看生成的JSON数据
++ 查看生成的JSON数据
 
 在浏览器中输入地址：http://127.0.0.1:8080,不出意外就可以看到输出的数据了。
 ## 细说ymockcfg.js
@@ -192,21 +192,21 @@ module.exports = [
 ## ymock命令介绍
 执行命令可以查看ymock命令的帮助：
 ```
-ymock -h
+$ ymock -h
 ```
 ### init
 执行下面命令查看init子命令的帮助
 ```
-ymock init -h
+$ ymock init -h
 ```
 
 ### run -p [port]
 执行下面命令查看run子命令的帮助
 ```
-ymock run -h
+$ ymock run -h
 ```
 
 ## 结束语
-如果你觉得不错，[请点我](https://github.com/yaofly2012/ymock)到Github给个星。如果你有兴趣欢迎添砖加瓦！
+如果你有兴趣欢迎添砖加瓦！
 
 程序猿何必难为程序猿
