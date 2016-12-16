@@ -1,6 +1,6 @@
 {
   "name": "ymock",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,10 +11,18 @@
     "email": "yaofly2012@163.com"
   },
   "homepage": "https://github.com/yaofly2012/ymock#readme",
+  "bug":{
+    "url": "https://github.com/yaofly2012/ymock/issues"
+  },
+  "description": "给我一个URL，返给你个JSON数据",
   "keywords": [
     "mock",
     "api"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaofly2012/ymock.git"
+  },
   "license": "ISC",
   "bin": {
     "ymock": "./bin/cli.js"
