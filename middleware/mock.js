@@ -102,7 +102,7 @@ module.exports = function(req, res, next) {
 	}
 	var mockData = getMockData(req, res) || '';
 	if(qMockUtil.isString(mockData)){
-		res.setHeader('Content-Type', 'text/plain');
+		res.setHeader('Content-Type', 'text/plain; charset=utf-8');
 	}else{
 		res.setHeader('Content-Type', 'application/json');
 		mockData = JSON.stringify(mockData);

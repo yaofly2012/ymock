@@ -5,13 +5,32 @@
 'use strict';
 const qMockUtil = require('../utils/util'); 
 
+var parseErrorRule = [
+	{
+		pattern: function() { 
+			return true 
+		},
+		respondWith: function(){
+			return '解析配置文件错误！请查看详细日志';
+		}
+	}
+];
+
 function _match(req){
 	var url = req.url;
 	// 解决非跨域请求url没有host信息问题
 	if(!req.headers['origin'] && url[0] === '/'){
 		url = 'http://' + req.headers['host'] + url;
 	}
-	var config = require(qMockUtil.getConfigFile()); // 为了热更新
+	var config = null;
+	try {
+		config = require(qMockUtil.getConfigFile()); // 为了热更新	
+	} catch(e){
+		console.log('*************  解析配置文件错误！*************  ')
+		console.log(e);
+		config = parseErrorRule;
+	}
+
 	if(!qMockUtil.isArray(config)){
 		console.error(`\t${qMockUtil.getConfigFile()}格式不正确`);
 		return;
