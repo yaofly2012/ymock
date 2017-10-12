@@ -53,7 +53,7 @@ module.exports = function(req, res, next) {
 		return;
 	}
 	if(req.matchedRule && !req.matchedRule.respondWith){
-		var msg = `'${req.matchedRule.pattern}'对应的respondWith属性不合法`;
+		var msg = `respondWith属性不合法`;
 		console.error(msg);
 		res.end(msg);
 		return;

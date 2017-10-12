@@ -37,7 +37,7 @@ execMock[respondWithTypeObj.func] = function(func, req, res){
 // 字符串
 execMock[respondWithTypeObj.str] = function(str, req, res){
 	var data = str;
-	switch(path.extname(str)){
+	switch(path.extname(str).toLowerCase()){
 		case '.json':
 			data = this[respondWithTypeObj.jsonFile](str, req, res);
 			break;

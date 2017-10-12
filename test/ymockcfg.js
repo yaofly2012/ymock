@@ -33,8 +33,16 @@
 module.exports = [
 	{
 		pattern: /b$/i,
-		respondWith: function(){
-			return 'data/list.json'
+		respondWith: function(data, req){
+			console.log(data);
+			console.log(req.url);
+			return 'data/list.jsoN'
+		}
+	},
+	{
+		pattern: /a/i,
+		respondWith: function(data){
+			return JSON.stringify(data || {});
 		}
 	}
 ];

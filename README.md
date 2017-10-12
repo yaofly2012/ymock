@@ -158,9 +158,9 @@ module.exports = [
 module.exports = [
 	{
 		pattern: /user\.json/,
-		respondWith: function(postData, qs, req, res){
+		respondWith: function(data, req, res){
 			return {
-				name: qs.name
+				name: data.name
 			}
 		}
 	}
