@@ -31,8 +31,6 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "commander": "^2.11.0",
-    "connect": "^3.6.5",
-    "http-proxy": "^1.16.2",
-    "request": "^2.79.0"
+    "connect": "^3.6.5"
   }
 }

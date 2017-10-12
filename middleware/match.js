@@ -47,8 +47,13 @@ function _match(req){
 module.exports = function(req, res, next) {
 	req.matchedRule = _match(req);
 	console.log(`处理请求: ${req.url}\n匹配结果：${!!req.matchedRule ? '匹配': '不匹配'}`);
+	if(!req.matchedRule){
+		res.writeHead(404);
+		res.end('404');
+		return;
+	}
 	if(req.matchedRule && !req.matchedRule.respondWith){
-		var msg = `${req.matchedRule}对应的respondWith属性不合法`;
+		var msg = `'${req.matchedRule.pattern}'对应的respondWith属性不合法`;
 		console.error(msg);
 		res.end(msg);
 		return;

@@ -25,13 +25,12 @@ execMock[respondWithTypeObj.none] = function(){
 
 // 执行函数，如果函数返回.json文件名，则读取文件内容
 execMock[respondWithTypeObj.func] = function(func, req, res){
-	var qsObj = qs.parse(url.parse(req.url).query);
-	var result = func(req.body, qsObj, req, res);
+	var data = req.method.toUpperCase() === 'POST' ? req.body : qs.parse(url.parse(req.url).query);
+	var result = func(data, req, res);
 	// 如果返回的是字符串
 	if(qMockUtil.isString(result)){
 		return this[respondWithTypeObj.str](result, req, res);
 	}
-
 	return result;
 };
 
@@ -96,10 +95,6 @@ function getMockData(req, res){
 }
 
 module.exports = function(req, res, next) {
-	if(!req.matchedRule){
-		next();
-		return;
-	}
 	var mockData = getMockData(req, res) || '';
 	if(qMockUtil.isString(mockData)){
 		res.setHeader('Content-Type', 'text/plain; charset=utf-8');

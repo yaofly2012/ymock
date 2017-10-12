@@ -8,7 +8,7 @@ module.exports = function(req, res, next){
 	if(req.headers['origin']){
 		res.setHeader('Access-Control-Allow-Origin', req.headers['origin']);
 		res.setHeader('Access-Control-Allow-Credentials', true);
-		if(req.method === 'OPTIONS') {
+		if(req.method.toUpperCase() === 'OPTIONS') {
 			res.setHeader('Access-Control-Allow-Headers', req.headers['Access-Control-Request-Headers'.toLowerCase()]);
 			res.setHeader('Access-Control-Allow-Methods', req.method);
 			res.setHeader('Access-Control-Max-Age', 86400); // 24H

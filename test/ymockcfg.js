@@ -32,10 +32,7 @@
 */
 module.exports = [
 	{
-		pattern: function(req){
-			console.log('hehe');
-			return true;
-		},
+		pattern: /b$/i,
 		respondWith: function(){
 			return 'data/list.json'
 		}

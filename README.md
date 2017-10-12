@@ -173,8 +173,7 @@ module.exports = [
 根据请求中QueryString的参数不同，而输出的mock数据也不同。
 #### respondWith函数的参数
 respondWidth的函数参数分别是：
-请求POST的数据，
-请求QueryString参数，
+请求参数（POST请求从body获取，其他则从QueryString获取），
 请求对象（[http.IncomingMessage](http://nodejs.cn/doc/node/http.html#http_class_http_incomingmessage)），
 响应对象（[http.ServerResponse](http://nodejs.cn/doc/node/http.html#http_class_http_serverresponse)）
 #### respondWith函数返回值

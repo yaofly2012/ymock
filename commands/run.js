@@ -9,7 +9,6 @@ const connect = require('connect');
 const bodyParser = require('body-parser');
 const qMockUtil = require('../utils/util.js');
 const match = require('../middleware/match.js');
-const passthrogh = require('../middleware/passthrough.js');
 const crossDomain = require('../middleware/crossDomain.js');
 const mock = require('../middleware/mock.js');
 
@@ -35,7 +34,6 @@ module.exports = function(port){
 	}
 	var app = connect();
 	app.use(match)
-		.use(passthrogh)
 		.use(crossDomain) // 只对mock的请求进行CORS处理
 		.use(bodyParser.json())
 		.use(bodyParser.urlencoded({ extended: true }))
