@@ -1,6 +1,6 @@
 {
   "name": "ymock",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "给我一个URL，返给你个JSON数据",
   "main": "index.js",
   "scripts": {
