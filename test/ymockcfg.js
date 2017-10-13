@@ -30,19 +30,31 @@
 * 	}
 * ];
 */
+//module.exports = {};
 module.exports = [
 	{
 		pattern: /b$/i,
-		respondWith: function(data, req){
+		respondWith: function(){
+			return function(){
+				return function(){
+					return 122;
+				};
+			}
+		},
+		respondWith21: function(data, req, res) {
+			//res.write('custome')
+			//return 1;
+		},
+		respondWith2: function(data, req){
 			console.log(data);
 			console.log(req.url);
 			return 'data/list.jsoN'
 		}
 	},
 	{
-		pattern: /a/i,
+		pattern: /\/a/i,
 		respondWith: function(data){
-			return JSON.stringify(data || {});
+			return JSON.stringify({name: 'join'});
 		}
 	}
 ];

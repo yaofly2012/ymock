@@ -5,6 +5,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const colors = require('colors/safe');
 
 var util = {};
 
@@ -25,6 +26,18 @@ util.getConfigFile = function(){
 // 判断当前是否存在配置文件
 util.existConfigFile = function(){
 	return fs.existsSync(util.getConfigFile());
+}
+
+util.logger = {
+	info: function(msg) {
+		console.log(msg)
+	},
+	success: function(msg) {
+		this.info(colors.green(msg))
+	},
+	error: function(msg) {
+		this.info(colors.red(msg))
+	}
 }
 
 module.exports = util;

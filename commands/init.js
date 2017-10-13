@@ -7,6 +7,7 @@
 'use strcit';
 const fs = require('fs');
 const path = require('path');
+const logger = require('../utils/util.js').logger;
 
 module.exports = function(name){
 	var projectName = path.join(process.cwd(), name || 'ymock');
@@ -15,16 +16,16 @@ module.exports = function(name){
 	
 	if(!fs.existsSync(projectName)){
 		fs.mkdirSync(projectName);
-		console.log(`目录${projectName}创建成功`);
+		logger.info(`> Dir ${projectName} created successfully`);
 	} else {
-		console.log(`目录${projectName}已经存在`);
+		logger.info(`> Dir ${projectName} existed already`);
 	}
 
 	if(!fs.existsSync(config)){
 		fs.writeFileSync(config, fs.existsSync(configTpl) ? fs.readFileSync(configTpl) : '');
-		console.log(`文件${config}创建成功`);
+		logger.info(`> File ${config} created successfully`);
 	} else {
-		console.log(`文件${config}已经存在`);
+		logger.info(`> File ${config} existed already`);
 	}
-	console.log(`${name || 'ymock'}初始化成功`);
+	logger.success(`Project ${name || 'ymock'} init successfully`);
 }

@@ -7,9 +7,9 @@ const url = require('url');
 const path = require('path');
 const fs = require('fs');
 const util = require('util');
-const qMockUtil = require('../utils/util.js');
+const yMockUtil = require('../utils/util.js');
 const mockJson = require('../utils/mockJson.js');
-
+const logger = yMockUtil.logger;
 const respondWithTypeObj= {
 	'none': '',
 	'func': 'func',
@@ -23,13 +23,21 @@ execMock[respondWithTypeObj.none] = function(){
 	return '';
 };
 
-// 执行函数，如果函数返回.json文件名，则读取文件内容
+/*
+ 执行函数，
+ 如果函数返回.json，.mockjson文件名，则读取文件内容
+ 如果返回undefined，则默认为responseWith函数自己操作response
+*/
 execMock[respondWithTypeObj.func] = function(func, req, res){
 	var data = req.method.toUpperCase() === 'POST' ? req.body : qs.parse(url.parse(req.url).query);
 	var result = func(data, req, res);
 	// 如果返回的是字符串
-	if(qMockUtil.isString(result)){
+	if(yMockUtil.isString(result)){
 		return this[respondWithTypeObj.str](result, req, res);
+	} 
+	// 如果是函数，则执行该函数
+	if(yMockUtil.isFunction(result)) {
+		return execMock[respondWithTypeObj.func](result, req, res);
 	}
 	return result;
 };
@@ -54,8 +62,8 @@ execMock[respondWithTypeObj.jsonFile] = function (fileName, req, res){
 	var absoluteFilePath = path.join(process.cwd(), fileName), 
 		data = '';
 	if(!fs.existsSync(absoluteFilePath)){
-		data = `${absoluteFilePath}文件不存在`;
-		console.error(data);
+		data = `File ${absoluteFilePath} not exist`;
+		logger.error(data);
 		return data;
 	} 
 
@@ -63,8 +71,8 @@ execMock[respondWithTypeObj.jsonFile] = function (fileName, req, res){
 	try{
 		return JSON.parse(data);
 	} catch(e){
-		data = `${absoluteFilePath}文件内容不是合法的JSON`;
-		console.error(data);
+		data = `The content of file ${absoluteFilePath} is illegal JSON:\n${data}`;
+		logger.error(data);
 	}
 	return data;
 };
@@ -72,7 +80,7 @@ execMock[respondWithTypeObj.jsonFile] = function (fileName, req, res){
 // 解析mockjson 文件
 execMock[respondWithTypeObj.mockJsonFile] = function(fileName, req, res){
 	var data = this[respondWithTypeObj.jsonFile](fileName, req, res);
-	if(qMockUtil.isObject(data)){
+	if(yMockUtil.isObject(data)){
 		data = mockJson.generateFromTemplate(data);
 	}
 	return data;
@@ -80,23 +88,28 @@ execMock[respondWithTypeObj.mockJsonFile] = function(fileName, req, res){
 
 // Get mock data
 function getMockData(req, res){
-	debugger;
 	var mockData, 
-		respondWithType = respondWithTypeObj.none,
+		respondWithType = respondWithTypeObj.func,
 		matchedRule = req.matchedRule;
-	if(qMockUtil.isFunction(matchedRule.respondWith)){
-		respondWithType = respondWithTypeObj.func;
-	} else if(qMockUtil.isString(matchedRule.respondWith)){
-		respondWithType = respondWithTypeObj.str;
+	if(!yMockUtil.isFunction(matchedRule.respondWith)){
+		var temp = matchedRule.respondWith;
+		matchedRule.respondWith = function() {
+			if(yMockUtil.isUndefined(temp)) {
+				temp += ''; // 如果直接赋值undefined, 则转成字符串形式
+			}
+			return temp;
+		}
 	}
-
 	mockData = execMock[respondWithType](matchedRule.respondWith, req, res);
 	return mockData;
 }
 
 module.exports = function(req, res, next) {
-	var mockData = getMockData(req, res) || '';
-	if(qMockUtil.isString(mockData)){
+	var mockData = getMockData(req, res);
+	if(yMockUtil.isUndefined(mockData) && res.finished) {
+		return;
+	}
+	if(yMockUtil.isString(mockData)){
 		res.setHeader('Content-Type', 'text/plain; charset=utf-8');
 	}else{
 		res.setHeader('Content-Type', 'application/json');

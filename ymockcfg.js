@@ -8,6 +8,10 @@
 * 
 * url匹配规则举例：
 * module.exports = [
+*	{
+* 		pattern: /test\.json/, // 正则表达式形式，
+* 		respondWith: 1 // 任意非函数数据 nuber, null, undefined, Object
+* 	},
 * 	{
 * 		pattern: /test\.json/, // 正则表达式形式，
 * 		respondWith: 'test.json' // json文件，相对于当前目录
