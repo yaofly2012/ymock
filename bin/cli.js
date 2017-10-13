@@ -9,7 +9,7 @@ program.version(require('../package.json').version || '0.0.1');
 // init command
 program
 	.command('init [name]')
-	.description('初始化ymock项目, [name]指定项目名称，默认为ymock')
+	.description('Init ymock project, project name is specified by param [name], and default is ymock')
 	.action(function(name){
 		var init = require('../commands/init.js');
 		init(name);
@@ -18,8 +18,8 @@ program
 // run command
 program
 	.command('run')
-	.description('启动ymock服务')
-	.option('-p, --port [port]', '指定端口号，默认8080', 8080)
+	.description('Launch ymock service')
+	.option('-p, --port [port]', 'port, default is 8080', 8080)
 	.action(function(){	
 		var mock = require('../commands/run.js');
 		mock(this.port);
