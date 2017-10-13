@@ -18,7 +18,7 @@ program
 // run command
 program
 	.command('run')
-	.description('启动mock服务')
+	.description('启动ymock服务')
 	.option('-p, --port [port]', '指定端口号，默认8080', 8080)
 	.action(function(){	
 		var mock = require('../commands/run.js');

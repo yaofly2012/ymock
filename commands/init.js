@@ -1,8 +1,8 @@
 /**
 * 初始化qmock项目
 * 
-* 当前目录下创建qmock项目，默认项目名称是qmock,
-* 并在该项目下创建qmockcfg.js文件
+* 当前目录下创建ymock项目，默认项目名称是qmock,
+* 并在该项目下创建ymockcfg.js文件
 */
 'use strcit';
 const fs = require('fs');

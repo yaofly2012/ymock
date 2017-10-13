@@ -11,7 +11,7 @@ var parseErrorRule = [
 			return true 
 		},
 		respondWith: function(){
-			return '解析配置文件错误！请查看详细日志';
+			return '解析ymockcfg.js文件错误！请查看终端输出日志';
 		}
 	}
 ];
@@ -46,15 +46,17 @@ function _match(req){
 
 module.exports = function(req, res, next) {
 	req.matchedRule = _match(req);
-	console.log(`处理请求: ${req.url}\n匹配结果：${!!req.matchedRule ? '匹配': '不匹配'}`);
-	if(!req.matchedRule){
-		res.writeHead(404);
-		res.end('404');
-		return;
-	}
-	if(req.matchedRule && !req.matchedRule.respondWith){
-		var msg = `respondWith属性不合法`;
-		console.error(msg);
+	var msg = `处理请求: ${req.url}\n匹配结果：${!!req.matchedRule ? '匹配': '不匹配'}`;
+	console.log(msg);
+	if(!req.matchedRule || req.matchedRule && !req.matchedRule.respondWith){
+		if(!req.matchedRule) {
+			res.writeHead(404);
+		} else {
+			res.writeHead(500);
+			msg = `respondWith属性不合法`;
+			console.error(msg);
+		}
+		res.setHeader('Content-Type', 'text/plain; charset=utf-8');
 		res.end(msg);
 		return;
 	}

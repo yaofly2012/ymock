@@ -43,7 +43,7 @@ module.exports = function(port){
 	server.listen(port);
 
 	server.on('listening', function(){
-		console.log('服务启动成功，端口：' + port);
+		console.log(`服务启动成功，端口${port}`);
 	});
 
 	server.on('error', function(e){
@@ -52,7 +52,7 @@ module.exports = function(port){
 				console.error(`服务启动失败，端口${port}被占用了！`);
 				break;
 			default:
-				console.error('服务启动失败，' + e.code);
+				console.error(`服务启动失败，${e.code}`);
 		}
 	});
 

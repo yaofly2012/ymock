@@ -17,7 +17,7 @@ var util = {};
 	})(type);
 });
 
-// 获取qmock config文件路径
+// 获取ymock config文件路径
 util.getConfigFile = function(){
 	return path.join(process.cwd(), 'ymockcfg.js');
 }
