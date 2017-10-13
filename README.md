@@ -10,7 +10,7 @@
 
 ## ymock能做什么
 + mock接口数据，并且支持mockjson模板
-+ mock接口逻辑
++ mock接口逻辑，根据请求不同进行不同的mock数据生成
 
 ## 安装
 ### 预置条件
@@ -80,12 +80,17 @@ ymockcfg.js本质上就是一个nodejs模块（不过修改该文件，不用重
 pattern属性定义URL匹配规则，目前该属性可取值为字符串，正则表达式，和函数。
 
 respondWith属性定义JSON数据生成方式，该属性可取值number, null, boolean, undefined, Object, String, Function。不同类型的数据处理方式不同：
+
 1. 如果respondWith取值为number, null, boolean, undefined, Object，则直接返回该数据;
 2. 如果respondWith取值为String：
+
 	2-1) 如果该字符串以'.json'或者'.mockjson'结尾，则视为文件，读取该文件并把文件内容返回
+
 	2-2) 其他则作为普通字符窜返回
 3. 如果respondWith取值为Function，则调用该函数，根据函数的返回值不同进行不同的处理：
+
 	3-1) 返回值为undefined， 如果函数已经调用了response.end方法，则直接返回，否则返回空
+
 	3-2) 其他，则按照1，2，3的处理方式
 ### pattern取值—字符串
 采用精确匹配策略，接着上面的举例，修改ymockcfg.js:
@@ -159,7 +164,7 @@ module.exports = [
 ```
 在浏览器中访问http://127.0.0.1:8080/userlist.json，会发现生产5跳数据。
 ### respondWith取值—函数
-如果你想更加自由的控制mock的数据，那就给respondWith赋值个函数吧。此时会把函数的返回值作为mock数据。不过你也可以不返回数据，直接在函数中直接操作response来确定返回值。
+如果你想更加自由的控制mock的数据，那就给respondWith赋值个函数吧。此时会把函数的返回值作为mock数据。不过你也可以不返回数据，直接在函数中直接操作response来确定返回值（**注意如果自己操作response,尽量记得调用reponse.end方法**）。
 先来个栗子(根据请求参数决定mock数据)。修改ymockcfg.js:
 ```javascript
 module.exports = [
