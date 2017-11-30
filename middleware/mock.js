@@ -30,7 +30,13 @@ execMock[respondWithTypeObj.none] = function(){
 */
 execMock[respondWithTypeObj.func] = function(func, req, res){
 	var data = req.method.toUpperCase() === 'POST' ? req.body : qs.parse(url.parse(req.url).query);
-	var result = func(data, req, res);
+	var result;
+	try {
+		result = func(data, req, res);	
+	} catch(e) {
+		logger.error(e);
+		result =  'Error: failed to execute function respondWith';
+	}
 	// 如果返回的是字符串
 	if(yMockUtil.isString(result)){
 		return this[respondWithTypeObj.str](result, req, res);
@@ -65,10 +71,9 @@ execMock[respondWithTypeObj.jsonFile] = function (fileName, req, res){
 		data = `File ${absoluteFilePath} not exist`;
 		logger.error(data);
 		return data;
-	} 
-
-	data = fs.readFileSync(absoluteFilePath, { encoding: 'utf-8'});
+	} 	
 	try{
+		data = fs.readFileSync(absoluteFilePath, { encoding: 'utf-8'});
 		return JSON.parse(data);
 	} catch(e){
 		data = `The content of file ${absoluteFilePath} is illegal JSON:\n${data}`;
@@ -90,30 +95,25 @@ execMock[respondWithTypeObj.mockJsonFile] = function(fileName, req, res){
 function getMockData(req, res){
 	var mockData, 
 		respondWithType = respondWithTypeObj.func,
-		matchedRule = req.matchedRule;
-	if(!yMockUtil.isFunction(matchedRule.respondWith)){
-		var temp = matchedRule.respondWith;
-		matchedRule.respondWith = function() {
-			if(yMockUtil.isUndefined(temp)) {
-				temp += ''; // 如果直接赋值undefined, 则转成字符串形式
-			}
+		respondWith = req.matchedRule.respondWith;
+	// 如果respondWith不是函数，则转成函数处理方式
+	if(!yMockUtil.isFunction(respondWith)){
+		var temp = respondWith;
+		respondWith = function() {			
 			return temp;
 		}
 	}
-	mockData = execMock[respondWithType](matchedRule.respondWith, req, res);
+	mockData = execMock[respondWithType](respondWith, req, res);
 	return mockData;
 }
 
 module.exports = function(req, res, next) {
 	var mockData = getMockData(req, res);
-	if(yMockUtil.isUndefined(mockData) && res.finished) {
-		return;
+	// 如果直接赋值undefined, 则转成字符串形式，它不属于JSON类型
+	if(yMockUtil.isUndefined(mockData)) {
+		mockData += ''; 
 	}
-	if(yMockUtil.isString(mockData)){
-		res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-	}else{
-		res.setHeader('Content-Type', 'application/json');
-		mockData = JSON.stringify(mockData);
-	}
+	mockData = JSON.stringify(mockData);
+	res.setHeader('Content-Type', 'application/json');
 	res.end(mockData);
 };

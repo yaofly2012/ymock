@@ -33,6 +33,13 @@
 //module.exports = {};
 module.exports = [
 	{
+		pattern: /test\.json/i,
+		respondWith: function() {
+			
+			return 'helo'
+		}
+	},
+	{
 		pattern: /b$/i,
 		respondWith: function(){
 			return function(){
@@ -54,7 +61,7 @@ module.exports = [
 	{
 		pattern: /\/a/i,
 		respondWith: function(data){
-			return JSON.stringify({name: 'join'});
+			return {name: 'join'};
 		}
 	}
 ];
