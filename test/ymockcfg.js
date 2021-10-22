@@ -34,9 +34,8 @@
 module.exports = [
 	{
 		pattern: /test\.json/i,
-		respondWith: function() {
-			
-			return 'helo'
+		respondWith: function() {			
+			return 'hello world!'
 		}
 	},
 	{
@@ -61,7 +60,7 @@ module.exports = [
 	{
 		pattern: /\/a/i,
 		respondWith: function(data){
-			return {name: 'join'};
+			return {name: 'join', age: 12, data };
 		}
 	}
 ];
