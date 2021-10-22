@@ -1,6 +1,5 @@
 # ymock
 
-
 [![NPM Version](http://img.shields.io/npm/v/ymock.svg?style=flat)](https://www.npmjs.org/package/ymock)
 [![NPM Downloads](https://img.shields.io/npm/dm/ymock.svg?style=flat)](https://www.npmjs.org/package/ymock)
 
@@ -19,6 +18,7 @@
 ```
 $ npm install -g ymock
 ```
+
 ## 快速开始
 + 创建ymock项目(当前工作目录是user/study/ymock)
 
@@ -27,7 +27,7 @@ $ ymock init demo1
 ```
 
 执行成功后会在当前目录下创建demo1目录，并在在demo1目录里创建文件ymockcfg.js。
-``` javascript
+``` js
 module.exports = [
    	{
    	}
@@ -39,7 +39,7 @@ module.exports = [
 
 在ymockcfg.js同级目录中创建data目录，并创建json文件user.json：
 
-``` json
+```json
 {
 	"name": "john",
 	"age": "24"
@@ -48,7 +48,7 @@ module.exports = [
 
 + 在ymockcfg.js中添加请求匹配规则配置
 
-```javascript
+```js
 module.exports = [
 	{
 		pattern: /user\.json/,
@@ -69,7 +69,7 @@ $ ymock run
 ## 细说ymockcfg.js
 ymockcfg.js本质上就是一个nodejs模块（不过修改该文件，不用重启服务），该模块返回的是个数组，在数组中添加URL匹配规则以及对应的JSON数据。
 数组的元素格式：
-``` javascript
+```js
 {
 		pattern: /user\.json/,
 		respondWith: 'data/user.json'
@@ -94,7 +94,7 @@ respondWith属性定义JSON数据生成方式，该属性可取值number, null, 
 	3-2) 其他，则按照1，2，3的处理方式
 ### pattern取值—字符串
 采用精确匹配策略，接着上面的举例，修改ymockcfg.js:
-```javascript
+```js
 module.exports = [
 	{
 		pattern: 'http://127.0.0.1:8080/user.json',
@@ -104,11 +104,12 @@ module.exports = [
 ```
 只有当请求URL为"http://127.0.0.1:8080/user.json"时才能匹配。
 ### pattern取值—正则表达式
-采用正则匹配的方式，如【快速开始】的举例
+采用正则匹配的方式，如【快速开始】的举例。
+
 ### pattern取值—函数
 会把请求对象（[http.IncomingMessage](http://nodejs.cn/doc/node/http.html#http_class_http_incomingmessage)）作为参数传给该函数，如果函数返回true则匹配成功，否则不匹配。这是最灵活的一种方式。
 继续修改ymockcfg.js:
-```
+```js
 {
 		pattern: function(req){
 			// 你的逻辑
@@ -117,10 +118,11 @@ module.exports = [
 		respondWith: 'data/user.json'
 }
 ```
+
 ### respondWith取值—普通字符串
 respondWith可以取值字符串，此时作为text/plain格式字符串返回的。
 修改ymockcfg.js：
-```javascript
+```js
 module.exports = [
 	{
 		pattern: function(req){
@@ -147,7 +149,7 @@ module.exports = [
 }
 ```
 修改ymockcfg.js：
-```javascript
+```js
 module.exports = [
 	{
 		pattern: function(req){
@@ -166,7 +168,7 @@ module.exports = [
 ### respondWith取值—函数
 如果你想更加自由的控制mock的数据，那就给respondWith赋值个函数吧。此时会把函数的返回值作为mock数据。不过你也可以不返回数据，直接在函数中直接操作response来确定返回值（**注意如果自己操作response,尽量记得调用reponse.end方法**）。
 先来个栗子(根据请求参数决定mock数据)。修改ymockcfg.js:
-```javascript
+```js
 module.exports = [
 	{
 		pattern: /user\.json/,
@@ -179,7 +181,7 @@ module.exports = [
 ];
 ```
 访问http://127.0.0.1:8080/user.json?name=john，则输出：
-``` javascript
+``` js
 { name: "john"}
 ```
 根据请求中QueryString的参数不同，而输出的mock数据也不同。
@@ -190,7 +192,7 @@ respondWidth的函数参数分别是：
 响应对象（[http.ServerResponse](http://nodejs.cn/doc/node/http.html#http_class_http_serverresponse)）
 #### respondWith函数返回值
 返回值如果返回值是以".json"或者".mockjson"结尾的字符串，则视为相对于当前目录的JSON文件，
-```javascript
+```js
 module.exports = [
 	{
 		pattern: /user\.json/,
@@ -201,7 +203,7 @@ module.exports = [
 ];
 ```
 同理如果以”.mockjson"结尾的字符串则视为相对于当前目录的mockjson文件：
-```javascript
+```js
 module.exports = [
 	{
 		pattern: /user\.json/,
