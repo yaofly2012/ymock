@@ -9,40 +9,40 @@
 * url匹配规则举例：
 * module.exports = [
 *	{
-* 		pattern: /test\.json/, // 正则表达式形式，
+* 		test: /test\.json/, // 正则表达式形式，
 * 		respondWith: 1 // 任意非函数数据 nuber, null, undefined, Object
 * 	},
 * 	{
-* 		pattern: /test\.json/, // 正则表达式形式，
+* 		test: /test\.json/, // 正则表达式形式，
 * 		respondWith: 'test.json' // json文件，相对于当前目录
 * 	},
 *	{
-* 		pattern: /detail\.json/,
+* 		test: /detail\.json/,
 * 		respondWith: test.mockjson' // mockjson 文件，相对于当前目录
 * 	},
 *	{
-* 		pattern: /list\.json/,
+* 		test: /list\.json/,
 * 		respondWith: function(postData, qs){ // Function，根据请求参数，返回mock数据文件，相对于当前目录
 *			return 'list' + postData.pageIndex	+ '.json';
 *		}
 * 	},
 *	{
-* 		pattern: /list\.json/,
+* 		test: /list\.json/,
 * 		respondWith: function(postData, qs, req, res){ // 自定义返回mock数据
 *			res.end('hello');
 *		}
 * 	},
 *	{
-* 		pattern: 'https://github.com/yaofly2012/ymock', // 字符串形式，精确匹配
+* 		test: 'https://github.com/yaofly2012/ymock', // 字符串形式，精确匹配
 * 		respondWith: 'test.json'
 * 	},
 *	{
-* 		pattern: function(req) {, // 诊断函数形式，根据函数值判断是否匹配
+* 		test: function(req) {, // 诊断函数形式，根据函数值判断是否匹配
 *			// 判断逻辑
 *			return boolean;
 *		}
 * 		respondWith: 'test.json' 
-* 	},
+* 	}
 * ];
 */
 module.exports = [

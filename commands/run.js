@@ -6,7 +6,7 @@ const fs = require('fs');
 const connect = require('connect');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const reqData = require('../middleware/reqData')
+const query = require('../middleware/query')
 const match = require('../middleware/match.js');
 const genMockData = require('../middleware/genMockData');
 const errorHandle = require('../middleware/errorHandle');
@@ -29,7 +29,7 @@ function runApp(port) {
     .use(cors({ maxAge: 1000 * 60 * 60 * 24 }))
 		.use(bodyParser.json())
 		.use(bodyParser.urlencoded({ extended: true }))
-    .use(reqData)
+    .use(query)
     .use(match)
 		.use(genMockData)
     .use(errorHandle);
@@ -61,13 +61,14 @@ function hotUpdateMockCfg(){
 	const mockcfgPath = require.resolve(getConfigFile());
 	fs.watch(mockcfgPath, () => {
     const mod = require.cache[mockcfgPath];
-    if(!!mod){
-      //remove children
-      if(mod.children){
-        mod.children.length = 0;
-      }
-      //remove require cache
-      delete require.cache[mockcfgPath];;
+    if(!mod){
+      return;
     }
+    //remove children
+    if(mod.children){
+      mod.children.length = 0;
+    }
+    //remove require cache
+    delete require.cache[mockcfgPath];
 	});
 }

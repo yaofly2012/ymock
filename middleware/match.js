@@ -13,13 +13,9 @@ const {
 
 module.exports = function(req, _, next) {
 	logger.info(`Handling request: ${req.url}`);
-  try {
-    req.matchedRule = doMatch(req);
-    logger.success('[match]');
-    next();
-  } catch(e) {
-		next(e);
-  }
+  req.matchedRule = doMatch(req);
+  logger.success('[match]');
+  next();
 }
 
 /*
@@ -49,14 +45,16 @@ function doMatch(req){
   }
   
   const rule = config.find(rule => {
-    return (isString(rule.pattern) && rule.pattern === url)
-      || (isRegExp(rule.pattern) && rule.pattern.test(url))
-      || (isFunction(rule.pattern) && rule.pattern(req));
+    // 兼容之前的版本
+    const test = rule.pattern === void 0 ? rule.test : rule.pattern;
+    return (isString(test) && test === url)
+      || (isRegExp(test) && test.test(url))
+      || (isFunction(test) && test(req));
   });
 
   if(!rule) {
-    logger.error('[no match]');
-    const error = new Error('no match');
+    logger.error('[miss]');
+    const error = new Error('miss');
     error.ignoreLog = true; // 没找到匹配的rule，则打印stack信息    
     throw error;
   }
