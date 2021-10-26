@@ -1,52 +1,47 @@
 /**
 * 启动mock服务
 */
-'use strict'
 const http = require('http');
 const fs = require('fs');
-const path = require('path');
 const connect = require('connect');
+const cors = require('cors');
 const bodyParser = require('body-parser');
-const yMockUtil = require('../utils/util.js');
+const query = require('../middleware/query')
 const match = require('../middleware/match.js');
-const crossDomain = require('../middleware/crossDomain.js');
-const mock = require('../middleware/mock.js');
-const logger = require('../utils/util.js').logger;
-/**
-* 通过简单的方式实现mockcfg.js文件热更新。
-* 注意：不要在Module上下文中引用mockcfg.js模块，参考match.js模块是如何引用mockcfg模块的。
-*/
-function hotUpdateMockCfg(){
-	var mockcfgPath = require.resolve(yMockUtil.getConfigFile());
-	fs.watch(mockcfgPath, function(){
-		var module = require.cache[mockcfgPath];
-		if(module && module.parent) {
-			module.parent.children.splice(module.parent.children.indexOf(module), 1);
-		}
-		require.cache[mockcfgPath] = null;
-	});
-}
+const genMockData = require('../middleware/genMockData');
+const errorHandle = require('../middleware/errorHandle');
+const { existConfigFile, getConfigFile, logger } = require('../utils/util.js');
 
-module.exports = function(port){
-	if(!yMockUtil.existConfigFile()){
-		logger.error(`${yMockUtil.getConfigFile()} not exist`);
+module.exports = function(port) {
+	if(!existConfigFile()){
+		logger.error(`${getConfigFile()} not exist`);
 		return;
 	}
-	var app = connect();
-	app.use(match)
-		.use(crossDomain) // 只对mock的请求进行CORS处理
+  // 启动服务
+	runApp(port);
+	// 此处开启qmockcfg热更新
+ 	hotUpdateMockCfg();
+}
+
+function runApp(port) {
+  const app = connect();
+	app
+    .use(cors({ maxAge: 1000 * 60 * 60 * 24 }))
 		.use(bodyParser.json())
 		.use(bodyParser.urlencoded({ extended: true }))
-		.use(mock);
+    .use(query)
+    .use(match)
+		.use(genMockData)
+    .use(errorHandle);
 
-	var server = http.createServer(app);
+	const server = http.createServer(app);
 	server.listen(port);
 
-	server.on('listening', function(){
+	server.on('listening', () => {
 		logger.success(`Service is runing on ${port}`);
 	});
 
-	server.on('error', function(e){
+	server.on('error', e => {
 		switch(e.code){
 			case 'EADDRINUSE':
 				logger.error(`Failed to launch service, port ${port} used already`);
@@ -56,7 +51,24 @@ module.exports = function(port){
 		}
 		process.exit(1);
 	});
+}
 
-	// 此处开启qmockcfg热更新
- 	hotUpdateMockCfg();
-};
+/**
+* 通过简单的方式实现mockcfg.js文件热更新。
+* 注意：不要在Module上下文中引用mockcfg.js模块，参考match.js模块是如何引用mockcfg模块的。
+*/
+function hotUpdateMockCfg(){
+	const mockcfgPath = require.resolve(getConfigFile());
+	fs.watch(mockcfgPath, () => {
+    const mod = require.cache[mockcfgPath];
+    if(!mod){
+      return;
+    }
+    //remove children
+    if(mod.children){
+      mod.children.length = 0;
+    }
+    //remove require cache
+    delete require.cache[mockcfgPath];
+	});
+}

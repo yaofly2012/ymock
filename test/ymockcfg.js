@@ -9,21 +9,21 @@
 * url匹配规则举例：
 * module.exports = [
 * 	{
-* 		pattern: /test\.json/,
+* 		test: /test\.json/,
 * 		respondWith: test.json' // json file
 * 	},
 *	{
-* 		pattern: /detail\.json/,
+* 		test: /detail\.json/,
 * 		respondWith: test.mockjson' // mockjson file
 * 	},
 *	{
-* 		pattern: /list\.json/,
+* 		test: /list\.json/,
 * 		respondWith: function(postData, qs){ // Function，根据请求参数，返回mock数据文件
 *			return 'list' + postData.pageIndex	+ '.json';
 *		}
 * 	},
 *	{
-* 		pattern: /list\.json/,
+* 		test: /list\.json/,
 * 		respondWith: function(postData, qs, req, res){ // 自定义返回mock数据
 *			res.end('hello');
 *		}
@@ -32,23 +32,29 @@
 */
 //module.exports = {};
 module.exports = [
+	{},
 	{
-		pattern: /test\.json/i,
-		respondWith: function() {
-			
-			return 'helo'
+		test: /custom/,
+		respondWith: function(req, res) {
+			res.end('hello')
 		}
 	},
 	{
-		pattern: /b$/i,
+		test: /test\.json/i,
+		respondWith: function() {			
+			return 'hello world!'
+		}
+	},
+	{
+		test: /b$/i,
 		respondWith: function(){
 			return function(){
 				return function(){
-					return 122;
+          return 'data/list.jsoN'
 				};
 			}
 		},
-		respondWith21: function(data, req, res) {
+		respondWith21: function(req, res) {
 			//res.write('custome')
 			//return 1;
 		},
@@ -59,9 +65,10 @@ module.exports = [
 		}
 	},
 	{
-		pattern: /\/a/i,
-		respondWith: function(data){
-			return {name: 'join'};
+		test: /\/a/i,
+		respondWith: (req, res) => {
+			throw new Error('helo')
+			return Promise.reject('12')
 		}
 	}
 ];
