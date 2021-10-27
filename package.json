@@ -1,6 +1,6 @@
 {
   "name": "ymock",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Simple, powerfull api mock",
   "main": "index.js",
   "scripts": {
