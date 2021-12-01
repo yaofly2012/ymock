@@ -26,7 +26,11 @@ module.exports = function(port) {
 function runApp(port) {
   const app = connect();
 	app
-    .use(cors({ maxAge: 1000 * 60 * 60 * 24 }))
+    .use(cors({
+			origin: true,			
+			credentials: true,
+			maxAge: 1000 * 60 * 60 * 24
+		}))
 		.use(bodyParser.json())
 		.use(bodyParser.urlencoded({ extended: true }))
     .use(query)

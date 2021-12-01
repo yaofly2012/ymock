@@ -31,8 +31,7 @@
 * ];
 */
 //module.exports = {};
-module.exports = [
-	{},
+module.exports = [	
 	{
 		test: /custom/,
 		respondWith: function(req, res) {
